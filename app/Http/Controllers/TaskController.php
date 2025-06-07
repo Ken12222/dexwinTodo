@@ -16,7 +16,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return Inertia::render("/", ["tasks"=>$tasks]);
+        return Inertia::render("Welcome", ["tasks"=>$tasks]);
     }
 
     /**
@@ -36,7 +36,7 @@ class TaskController extends Controller
 
         $saveTask = Task::create($validateTaskData);
 
-        return Inertia::render("Task", 
+        return Inertia::render("Welcome", 
         [
             "tasks"=>Task::all(),
             "message"=>"Task has been added successfully"
@@ -58,21 +58,30 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render("task/edit", ["id"=>$id]);
+        $task = Task::findOrFail($id);
+        return Inertia::render("Task/Edit", ["task"=>$task]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TaskRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $validateTaskData = $request->validated();
+        $validateTaskData = $request->validate([
+            "title"=>"sometimes|nullable|string|max:255",
+            "description"=>"sometimes|nullable|string|max:255",
+            "status"=>"sometimes|boolean"
+        ]);
         $fetchTask = Task::findOrfail($id);
         $updateTask = $fetchTask->update($validateTaskData);
 
-        return Inertia::render("tasks", 
+        if(!$updateTask){
+            return Inertia::render("Task/Edit", ["id"=>$id]);
+        }
+
+        return Inertia::render("Task/Show", 
         [
-            "tasks"=>Task::all(),
+            "tasks"=>Task::findOrFail($id),
             "message"=>"Update was successful"
         ]);
     }
@@ -86,12 +95,12 @@ class TaskController extends Controller
         $fetchTask->delete();
 
         if(!$fetchTask){
-            return Inertia::render("task/show", [
-                "message"=>"failed to delete task try again"
+            return Inertia::render("Welcome", [
+                "error"=>"failed to delete task try again"
             ]);
         }
 
-        return Inertia::render("task", [
+        return Inertia::render("Welcome", [
             "message"=>"Delete was successful"
         ]);
     }
