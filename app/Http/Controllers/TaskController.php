@@ -67,11 +67,16 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $task = Task::findOrFail($id);
         $validateTaskData = $request->validate([
             "title"=>"sometimes|nullable|string|max:255",
             "description"=>"sometimes|nullable|string|max:255",
             "status"=>"sometimes|boolean"
         ]);
+
+        empty($validateTaskData["title"]) ? $validateTaskData["title"] = $task["title"] : "";
+        empty($validateTaskData["description"]) ? $validateTaskData["description"] = $task["description"] : "";
+
         $fetchTask = Task::findOrfail($id);
         $updateTask = $fetchTask->update($validateTaskData);
 
@@ -81,7 +86,7 @@ class TaskController extends Controller
 
         return Inertia::render("Task/Show", 
         [
-            "tasks"=>Task::findOrFail($id),
+            "task"=>Task::findOrFail($id),
             "message"=>"Update was successful"
         ]);
     }

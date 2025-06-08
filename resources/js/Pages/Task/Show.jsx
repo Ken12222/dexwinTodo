@@ -8,16 +8,6 @@ export default function ShowTskDetails({ task, message, error }) {
             <HeaderBar />
             <main className="w-5/6 md:w-4/6 mx-auto my-8">
                 <div className="flex justify-between items-center">
-                    {message && (
-                        <p className="text-green-900 bg-green-200 p-4 rounded text-sm my-4">
-                            {message}
-                        </p>
-                    )}
-                    {error && (
-                        <p className="text-red-600 bg-red-200 p-4 rounded text-sm my-4">
-                            {error}
-                        </p>
-                    )}
                     <h1 className="text-2xl font-bold my-4">Task Details</h1>
                     {task.status ? (
                         <p className="text-green-700 bg-green-200 w-fit h-fit px-4 py-1 rounded-full">
@@ -29,6 +19,16 @@ export default function ShowTskDetails({ task, message, error }) {
                         </p>
                     )}
                 </div>
+                {message && (
+                    <p className="text-green-900 bg-green-200 p-4 rounded text-sm my-4">
+                        {message}
+                    </p>
+                )}
+                {error && (
+                    <p className="text-red-600 bg-red-200 p-4 rounded text-sm my-4">
+                        {error}
+                    </p>
+                )}
                 <div className="bg-gray-200 p-4 rounded">
                     <p className="text-gray-500 text-sm">Task Title</p>
                     <h2 className="text-xl my-2">{task.title}</h2>

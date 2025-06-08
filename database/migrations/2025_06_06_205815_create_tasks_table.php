@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string("title");
             $table->string("description");
             $table->boolean("status")->default(false);
-            //$table->timestamp("date");
             $table->timestamps();
         });
     }
