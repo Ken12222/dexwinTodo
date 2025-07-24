@@ -72,7 +72,7 @@ export default function EditTask({ task, errors }) {
                             }
                         >
                             <option value={task.status}>
-                                {status ? "Completed" : "To-do"}
+                                {task.status ? "Completed" : "To-do"}
                             </option>
                             <option value={1}>Completed</option>
                             <option value={0}>To-do</option>

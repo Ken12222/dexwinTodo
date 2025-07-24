@@ -81,7 +81,10 @@ class TaskController extends Controller
         $updateTask = $fetchTask->update($validateTaskData);
 
         if(!$updateTask){
-            return Inertia::render("Task/Edit", ["id"=>$id]);
+            return Inertia::render("Task/Edit", [
+                "id"=>$id,
+                "error"=>"Failed to update task"
+            ]);
         }
 
         return Inertia::render("Task/Show", 
